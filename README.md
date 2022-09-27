@@ -6,4 +6,4 @@ Aplicatie meteo
 - [Mihaela Constantin](https://github.com/mihaelacon)
 
 ## LIVE
-[aurelian2020.github.io/meteo](https://github.com/aurelian2020/meteo)
+[Demo](https://github.com/aurelian2020/meteo)
