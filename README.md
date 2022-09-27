@@ -7,3 +7,10 @@ Aplicatie meteo
 
 ## LIVE
 [Demo](https://github.com/aurelian2020/meteo)
+
+## TODO
+- [ ] Create a table in html
+- [ ] Table headers: City Name, Observation Date, Temperature, Humidity, WindSpeed, Actions
+- [ ] Add a json file with Cities
+- [ ] Design and structures in CSS
+- ...to be continued
