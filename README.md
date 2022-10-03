@@ -6,7 +6,7 @@ Aplicatie meteo
 - [Mihaela Constantin](https://github.com/mihaelacon)
 
 ## LIVE
-[Demo](https://aurelian2020.github.io/meteo)
+[Demo](https://github.com/aurelian2020/meteo)
 
 ## TODO
 - [ ] Create a table in html
