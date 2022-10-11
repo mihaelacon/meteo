@@ -11,6 +11,7 @@ Aplicatie meteo
 ## TODO
 - [x] Create a table in html - Mihaela
 - [x] Table headers: City Name, Observation Date, Temperature, Humidity, WindSpeed, Actions - Mihaela
-- [ ] Add a json file with Cities
-- [ ] Design and structures in CSS
+- [x] Add a json file with Cities - Aurelian
+- [x] Design and structures in CSS - Aurelian
+- [x] Add actions buttons - Aurelian
 - ...to be continued
