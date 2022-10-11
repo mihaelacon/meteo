@@ -14,4 +14,8 @@ Aplicatie meteo
 - [x] Add a json file with Cities - Aurelian
 - [x] Design and structures in CSS - Aurelian
 - [x] Add actions buttons - Aurelian
+- [x] Get weather conditions (on demand) - Aurelian
+- [ ] Edit/Modify locations/cities
+- [ ] Get current location (option)
+- [ ] Save data in LocalStorage
 - ...to be continued
