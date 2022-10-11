@@ -1,0 +1,187 @@
+function fn_locationToRow(loc) {
+   return `<tr>
+   <td>${loc.locname}</td>
+   <td data-id="${loc.id}" data-type="date"></td>
+   <td data-id="${loc.id}" data-type="temp"></td>
+   <td data-id="${loc.id}" data-type="wind"></td>
+   <td data-id="${loc.id}" data-type="code"></td>
+   <td><button type="button" class="edit btn btn--primary" data-id="${loc.id}">&#9998;</button> <button type="button" class="refresh btn btn--primary" data-id="${loc.id}" style="background-image: url('refresh.png'); background-repeat: no-repeat; background-position: center; width: 28px;">&nbsp;</button></td>
+   </tr>`
+}
+
+function fn_editLocation(id) {
+	//find element in arrLocs which has the id
+	var loc = arrLocs[id-1];
+	alert("NOT IMPLEMENTED: edit location "+loc.locname);
+}
+
+function fn_getConditions(id) {
+	//find element in arrLocs which has the id
+	var loc = arrLocs[id-1];
+	fetch("https://api.open-meteo.com/v1/forecast?latitude="+loc.latitude+"&longitude="+loc.longitude+"&current_weather=true&timezone=Europe/Bucharest")
+	  .then(function (r) {
+	    return r.json();
+	  })
+	  .then(function (weather) {
+	    //console.info(loc.locname);
+	    //console.info(weather.current_weather.temperature);
+	    document.querySelector('[data-id="'+id+'"][data-type="date"]').innerHTML = weather.current_weather.time.replace("T"," ");
+	    document.querySelector('[data-id="'+id+'"][data-type="temp"]').innerHTML = weather.current_weather.temperature;
+	    document.querySelector('[data-id="'+id+'"][data-type="wind"]').innerHTML = weather.current_weather.windspeed;
+	    document.querySelector('[data-id="'+id+'"][data-type="code"]').innerHTML = fn_weatherCodeToText(weather.current_weather.weathercode);
+	  });
+}
+
+function fn_weatherCodeToText(code) {
+	let c = parseInt(code);
+	switch (c) {
+		case 0:
+		   return "clear sky";
+		   break;
+		case 1:
+		   return "mainly clear";
+		   break;
+		case 2:
+		   return "partly cloudy";
+		   break;
+		case 3:
+		   return "overcast";
+		   break;
+		case 45:
+		   return "fog";
+		   break;
+		case 48:
+		   return "persistent fog";
+		   break;
+		case 51:
+		   return "light drizzle";
+		   break;
+		case 53:
+		   return "moderate drizzle";
+		   break;
+		case 55:
+		   return "dense drizzle";
+		   break;
+		case 56:
+		   return "freezing drizzle";
+		   break;
+		case 57:
+		   return "intense freezing drizzle";
+		   break;
+		case 61:
+		   return "light rain";
+		   break;
+		case 63:
+		   return "moderate rain";
+		   break;
+		case 65:
+		   return "heavy rain";
+		   break;
+		case 66:
+		   return "freezing rain";
+		   break;
+		case 67:
+		   return "heavy freezing rain";
+		   break;
+		case 71:
+		   return "light snow";
+		   break;
+		case 73:
+		   return "moderate snow";
+		   break;
+		case 75:
+		   return "heavy snow";
+		   break;
+		case 77:
+		   return "snow grains";
+		   break;
+		case 80:
+		   return "light rain showers";
+		   break;
+		case 81:
+		   return "moderate rain showers";
+		   break;
+		case 82:
+		   return "violent rain showers";
+		   break;
+		case 85:
+		   return "snow showers";
+		   break;
+		case 86:
+		   return "heavy snow showers";
+		   break;
+		case 95:
+		   return "thunderstorm";
+		   break;
+		case 96:
+		   return "thunderstorm & hail";
+		   break;
+		case 99:
+		   return "thunderstorm & heavy hail";
+		   break;
+		default:
+		   return "code: "+code;
+		   break;
+	}
+}
+
+function not_used_fn_locationToRow(loc) {
+  try {
+	  fetch("https://api.open-meteo.com/v1/forecast?latitude="+loc.latitude+"&longitude="+loc.longitude+"&current_weather=true&timezone=Europe/Bucharest")
+	    .then(function (r) {
+	      return r.json();
+	    })
+	    .then(function (weather) {
+	      var vreme = "<tr>";
+	      vreme += `<td>${loc.locname}</td>`;
+	      vreme += `<td>${weather.current_weather.time.replace("T"," ")}</td>`;
+	      vreme += `<td>${weather.current_weather.temperature}</td>`;
+	      vreme += `<td>${weather.current_weather.windspeed}</td>`;
+	      vreme += `<td>${weather.current_weather.weathercode}</td>`;
+	      vreme += `<td><button type="button" data_id="${loc.id}">Edit</button</td>`;
+	      vreme += "</tr>";
+	      console.info(vreme);
+	      return vreme
+	    });
+  } catch (error) {
+  	  console.info(error);
+  }
+}
+
+function fn_locationsToTable(arrLocations) {
+  arrLocs = arrLocations.map((x) => x);
+  var rowHTML = arrLocations.map(fn_locationToRow);
+  document.querySelector("table tbody").innerHTML = rowHTML.join("");
+}
+
+function fn_loadLocations() {
+  fetch("locations.json")
+    .then(function (r) {
+      return r.json();
+    })
+    .then(function (arrLocations) {
+      //console.info(arrLocations);
+      fn_locationsToTable(arrLocations);
+    });
+}
+
+function addEventListeners() {
+  const table = document.querySelector("table tbody");
+  table.addEventListener("click", e => {
+    const target = e.target;
+    if (target.matches("button.edit")) {
+      const id = target.getAttribute("data-id");
+      //console.info(id);
+      fn_editLocation(id);
+    } else if (target.matches("button.refresh")) {
+      const id = target.getAttribute("data-id");
+      //console.info("refresh: ",id);
+      fn_getConditions(id);
+    }
+  });
+}
+
+var arrLocs = [];
+fn_loadLocations();
+//console.info(arrLocs[0]);
+addEventListeners();

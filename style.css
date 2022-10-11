@@ -14,7 +14,7 @@ body {
 }
 
 table {
-  width: 1380px;
+  width: 1142px;
   margin-top: 20px;
   /* border: 1px solid #343a40; */
   /* border-collapse: collapse; */
@@ -39,4 +39,59 @@ tbody tr:nth-child(even) {
 
 tbody tr:nth-child(odd) {
   background-color: #e9ecef;
+}
+
+html,
+body {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  --primary: rgb(59, 130, 246);
+  --primary-light: rgb(96, 165, 250);
+  --gray: rgb(209, 213, 219);
+}
+
+.nobr {
+  white-space: nowrap;
+}
+
+button {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-size: smaller;
+  cursor: pointer;
+  outline: inherit;
+}
+
+.btn-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.btn {
+  color: white;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  transition: all 0.5s ease;
+}
+
+.btn--primary {
+  background-color: var(--primary);
+}
+
+.btn--primary:hover {
+  background-color: var(--primary-light);
+}
+
+body {
+  color: #343a40;
+  line-height: 1;
+  display: flex;
+  justify-content: center;
 }
