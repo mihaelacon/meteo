@@ -5,7 +5,7 @@ function fn_locationToRow(loc) {
    <td data-id="${loc.id}" data-type="temp"></td>
    <td data-id="${loc.id}" data-type="wind"></td>
    <td data-id="${loc.id}" data-type="code"></td>
-   <td><button type="button" class="edit btn btn--primary" data-id="${loc.id}">&#9998;</button> <button type="button" class="refresh btn btn--primary" data-id="${loc.id}" style="background-image: url('refresh.png'); background-repeat: no-repeat; background-position: center; width: 28px;">&nbsp;</button></td>
+   <td><button type="button" class="btn-refresh btn btn--primary" data-id="${loc.id}" style="background-image: url('refresh.png'); background-repeat: no-repeat; background-position: center; width: 28px;">&nbsp;</button> <button type="button" class="btn-edit btn btn--primary" data-id="${loc.id}">&#9998;</button> <button type="button" class="btn-delete btn btn--primary" data-id="${loc.id}">&#10006;</button></td>
    </tr>`
 }
 
@@ -26,8 +26,8 @@ function fn_getConditions(id) {
 	    //console.info(loc.locname);
 	    //console.info(weather.current_weather.temperature);
 	    document.querySelector('[data-id="'+id+'"][data-type="date"]').innerHTML = weather.current_weather.time.replace("T"," ");
-	    document.querySelector('[data-id="'+id+'"][data-type="temp"]').innerHTML = weather.current_weather.temperature;
-	    document.querySelector('[data-id="'+id+'"][data-type="wind"]').innerHTML = weather.current_weather.windspeed;
+	    document.querySelector('[data-id="'+id+'"][data-type="temp"]').innerHTML = weather.current_weather.temperature + " &#8451;";
+	    document.querySelector('[data-id="'+id+'"][data-type="wind"]').innerHTML = weather.current_weather.windspeed + " km/h";
 	    document.querySelector('[data-id="'+id+'"][data-type="code"]').innerHTML = fn_weatherCodeToText(weather.current_weather.weathercode);
 	  });
 }
@@ -166,22 +166,51 @@ function fn_loadLocations() {
 }
 
 function addEventListeners() {
-  const table = document.querySelector("table tbody");
-  table.addEventListener("click", e => {
-    const target = e.target;
-    if (target.matches("button.edit")) {
-      const id = target.getAttribute("data-id");
-      //console.info(id);
-      fn_editLocation(id);
-    } else if (target.matches("button.refresh")) {
-      const id = target.getAttribute("data-id");
-      //console.info("refresh: ",id);
-      fn_getConditions(id);
-    }
-  });
+	const table = document.querySelector("table tbody");
+	table.addEventListener("click", e => {
+	  const target = e.target;
+	  if (target.matches("button.btn-edit")) {
+	    const id = target.getAttribute("data-id");
+	    const action = "Edit location";
+	    fn_openModal(id,action);
+	  } else if (target.matches("button.btn-refresh")) {
+	    const id = target.getAttribute("data-id");
+	    fn_getConditions(id);
+	  } else if (target.matches("button.btn-delete")) {
+	  	 const id = target.getAttribute("data-id");
+	  	 const action = "Delete location";
+	  	 fn_openModal(id,action);
+	  }
+	});
+	// for modal
+	btnCloseModal.addEventListener('click', closeModal);
+	overlay.addEventListener('click', closeModal);
+	document.addEventListener('keydown', function (e) {
+	  if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+	    closeModal();
+	  }
+	});
 }
+
+const modal = document.querySelector('.modal');
+const overlay = document.querySelector('.overlay');
+const btnCloseModal = document.querySelector('.close-modal');
+const editButtons = document.querySelectorAll('.btn-edit');
+
+function fn_openModal(id,action) {
+  const modalText = document.querySelector('.modal p');
+  const modalTitle = document.querySelector('.modal h3');
+  modalText.innerHTML = id;
+  modalTitle.innerHTML = action;
+  modal.classList.remove('hidden');
+  overlay.classList.remove('hidden');
+}
+
+const closeModal = function () {
+  modal.classList.add('hidden');
+  overlay.classList.add('hidden');
+};
 
 var arrLocs = [];
 fn_loadLocations();
-//console.info(arrLocs[0]);
 addEventListeners();

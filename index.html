@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>METEO</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rubik">
     <link rel="stylesheet" href="style.css" />
   </head>
 
@@ -27,7 +28,7 @@
               <th>Temperature</th>
               <th>Windspeed</th>
               <th class="nobr">Weather code</th>
-              <th>Actions</th>
+              <th class="actions">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -81,6 +82,16 @@
         <p>&nbsp;</p>
       </center>
     </header>
+
+    <div class="modal hidden">
+      <button class="close-modal">&times;</button>
+      <h3>Actiune</h1>
+      <p>
+         Text
+      </p>
+    </div>
+    <div class="overlay hidden"></div>
+    
     <script src="index.js"></script>
   </body>
 </html>

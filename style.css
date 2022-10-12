@@ -6,7 +6,7 @@
 
 body {
   background-color: rgb(127, 221, 255);
-  font-family: "Inter", sans-serif;
+  font-family: "Rubik", sans-serif;
   color: #343a40;
   line-height: 1;
   display: flex;
@@ -16,21 +16,19 @@ body {
 table {
   width: 1142px;
   margin-top: 20px;
-  /* border: 1px solid #343a40; */
   /* border-collapse: collapse; */
-  font-size: 18px;
+  font-size: 16px;
 }
 
 th,
 td {
-  padding: 16px 24px;
+  padding: 8px 12px;
   text-align: left;
 }
 
 thead th {
   background-color: #2617f4;
   color: #fff;
-  width: 25%;
 }
 
 tbody tr:nth-child(even) {
@@ -53,6 +51,11 @@ body {
 
 .nobr {
   white-space: nowrap;
+}
+
+.actions {
+  white-space: nowrap;
+  width: 90px;
 }
 
 button {
@@ -94,4 +97,55 @@ body {
   line-height: 1;
   display: flex;
   justify-content: center;
+}
+
+/* -------------------------- */
+.close-modal {
+  position: absolute;
+  top: 1.2rem;
+  right: 2rem;
+  font-size: 2rem;
+  color: #333;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+p {
+  font-size: 1.8rem;
+}
+
+/* -------------------------- */
+/* MODAL CLASSES              */
+.hidden {
+  display: none;
+}
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30%;
+  background-color: white;
+  padding: 6rem;
+  border-radius: 3px;
+  box-shadow: 0 3rem 5rem rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px);
+  z-index: 5;
 }
