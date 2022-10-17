@@ -18,17 +18,14 @@ function fn_editLocation(id) {
 function fn_getConditions(id) {
 	//find element in arrLocs which has the id
 	var loc = arrLocs[id-1];
-	fetch("https://api.open-meteo.com/v1/forecast?latitude="+loc.latitude+"&longitude="+loc.longitude+"&current_weather=true&timezone=Europe/Bucharest")
+	return fetch("https://api.open-meteo.com/v1/forecast?latitude="+loc.latitude+"&longitude="+loc.longitude+"&current_weather=true&timezone=Europe/Bucharest")
 	  .then(function (r) {
 	    return r.json();
 	  })
 	  .then(function (weather) {
 	    //console.info(loc.locname);
 	    //console.info(weather.current_weather.temperature);
-	    document.querySelector('[data-id="'+id+'"][data-type="date"]').innerHTML = weather.current_weather.time.replace("T"," ");
-	    document.querySelector('[data-id="'+id+'"][data-type="temp"]').innerHTML = weather.current_weather.temperature + " &#8451;";
-	    document.querySelector('[data-id="'+id+'"][data-type="wind"]').innerHTML = weather.current_weather.windspeed + " km/h";
-	    document.querySelector('[data-id="'+id+'"][data-type="code"]').innerHTML = fn_weatherCodeToText(weather.current_weather.weathercode);
+	  	return weather.current_weather
 	  });
 }
 
@@ -155,13 +152,14 @@ function fn_locationsToTable(arrLocations) {
 }
 
 function fn_loadLocations() {
-  fetch("locations.json")
+  return fetch("locations.json")
     .then(function (r) {
       return r.json();
     })
     .then(function (arrLocations) {
       //console.info(arrLocations);
       fn_locationsToTable(arrLocations);
+	  return arrLocations
     });
 }
 
@@ -175,7 +173,12 @@ function addEventListeners() {
 	    fn_openModal(id,action);
 	  } else if (target.matches("button.btn-refresh")) {
 	    const id = target.getAttribute("data-id");
-	    fn_getConditions(id);
+	    fn_getConditions(id).then(weather=>{
+			document.querySelector('[data-id="'+id+'"][data-type="date"]').innerHTML = weather.time.replace("T"," ");
+			document.querySelector('[data-id="'+id+'"][data-type="temp"]').innerHTML = weather.temperature + " &#8451;";
+			document.querySelector('[data-id="'+id+'"][data-type="wind"]').innerHTML = weather.windspeed + " km/h";
+			document.querySelector('[data-id="'+id+'"][data-type="code"]').innerHTML = fn_weatherCodeToText(weather.weathercode);
+		});
 	  } else if (target.matches("button.btn-delete")) {
 	  	 const id = target.getAttribute("data-id");
 	  	 const action = "Delete location";
@@ -212,5 +215,13 @@ const closeModal = function () {
 };
 
 var arrLocs = [];
-fn_loadLocations();
+fn_loadLocations().then(l=>{
+	const requests = 
+	l.map(location=>
+		fn_getConditions(location.id))	
+		console.info(requests)
+ Promise.all(requests).then(weatherConditions=>{
+	console.info(weatherConditions);
+ })
+});
 addEventListeners();
