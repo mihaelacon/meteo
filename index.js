@@ -1,4 +1,4 @@
-function fn_locationToRow(loc) {
+function locationToRow(loc) {
    return `<tr>
    <td>${loc.locname}</td>
    <td data-id="${loc.id}" data-type="date"></td>
@@ -9,13 +9,13 @@ function fn_locationToRow(loc) {
    </tr>`
 }
 
-function fn_editLocation(id) {
+function editLocation(id) {
 	//find element in arrLocs which has the id
 	var loc = arrLocs[id-1];
 	alert("NOT IMPLEMENTED: edit location "+loc.locname);
 }
 
-function fn_getConditions(id) {
+function getConditions(id) {
 	//find element in arrLocs which has the id
 	var loc = arrLocs[id-1];
 	return fetch("https://api.open-meteo.com/v1/forecast?latitude="+loc.latitude+"&longitude="+loc.longitude+"&current_weather=true&timezone=Europe/Bucharest")
@@ -29,7 +29,7 @@ function fn_getConditions(id) {
 	  });
 }
 
-function fn_weatherCodeToText(code) {
+function weatherCodeToText(code) {
 	let c = parseInt(code);
 	switch (c) {
 		case 0:
@@ -145,20 +145,20 @@ function not_used_fn_locationToRow(loc) {
   }
 }
 
-function fn_locationsToTable(arrLocations) {
+function locationsToTable(arrLocations) {
   arrLocs = arrLocations.map((x) => x);
-  var rowHTML = arrLocations.map(fn_locationToRow);
+  var rowHTML = arrLocations.map(locationToRow);
   document.querySelector("table tbody").innerHTML = rowHTML.join("");
 }
 
-function fn_loadLocations() {
+function loadLocations() {
   return fetch("locations.json")
     .then(function (r) {
       return r.json();
     })
     .then(function (arrLocations) {
       //console.info(arrLocations);
-      fn_locationsToTable(arrLocations);
+      locationsToTable(arrLocations);
 	  return arrLocations
     });
 }
@@ -170,10 +170,10 @@ function addEventListeners() {
 	  if (target.matches("button.btn-edit")) {
 	    const id = target.getAttribute("data-id");
 	    const action = "Edit location";
-	    fn_openModal(id,action);
+	    openModal(id,action);
 	  } else if (target.matches("button.btn-refresh")) {
 	    const id = target.getAttribute("data-id");
-	    fn_getConditions(id).then(weather=>{
+	    getConditions(id).then(weather=>{
 			document.querySelector('[data-id="'+id+'"][data-type="date"]').innerHTML = weather.time.replace("T"," ");
 			document.querySelector('[data-id="'+id+'"][data-type="temp"]').innerHTML = weather.temperature + " &#8451;";
 			document.querySelector('[data-id="'+id+'"][data-type="wind"]').innerHTML = weather.windspeed + " km/h";
@@ -182,7 +182,7 @@ function addEventListeners() {
 	  } else if (target.matches("button.btn-delete")) {
 	  	 const id = target.getAttribute("data-id");
 	  	 const action = "Delete location";
-	  	 fn_openModal(id,action);
+	  	 openModal(id,action);
 	  }
 	});
 	// for modal
@@ -200,7 +200,7 @@ const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.close-modal');
 const editButtons = document.querySelectorAll('.btn-edit');
 
-function fn_openModal(id,action) {
+function openModal(id,action) {
   const modalText = document.querySelector('.modal p');
   const modalTitle = document.querySelector('.modal h3');
   modalText.innerHTML = id;
@@ -215,13 +215,21 @@ const closeModal = function () {
 };
 
 var arrLocs = [];
-fn_loadLocations().then(l=>{
-	const requests = 
-	l.map(location=>
-		fn_getConditions(location.id))	
-		console.info(requests)
- Promise.all(requests).then(weatherConditions=>{
-	console.info(weatherConditions);
+loadLocations().then(l=>{
+	const requests = l.map(location=>getConditions(location.id))
+	//console.info(requests)
+    Promise.all(requests).then(weatherConditions=>{
+	   console.info(weatherConditions);
+	   var id;
+	   for (i=0;i<12;i++) {
+			console.info(weatherConditions[i].temperature);
+			id = i+1;
+			document.querySelector('[data-id="'+id+'"][data-type="temp"]').innerHTML = weatherConditions[i].temperature + " &#8451;";
+			document.querySelector('[data-id="'+id+'"][data-type="date"]').innerHTML = weatherConditions[i].time.replace("T"," ");
+			document.querySelector('[data-id="'+id+'"][data-type="wind"]').innerHTML = weatherConditions[i].windspeed + " km/h";
+			document.querySelector('[data-id="'+id+'"][data-type="code"]').innerHTML = weatherCodeToText(weatherConditions[i].weathercode);
+	   }
  })
 });
+
 addEventListeners();
