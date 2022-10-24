@@ -1,12 +1,20 @@
+var arrLocs = [];
+
 function locationToRow(loc) {
   return `<tr>
    <td>${loc.locname}</td>
-   <td data-id="${loc.id}" data-type="date"></td>
-   <td data-id="${loc.id}" data-type="temp"></td>
-   <td data-id="${loc.id}" data-type="wind"></td>
-   <td data-id="${loc.id}" data-type="code"></td>
-   <td style="text-align: center"><button type="button" class="btn-edit btn btn--primary" data-id="${loc.id}">&#9998;</button> <button type="button" class="btn-delete btn btn--primary" data-id="${loc.id}">&#10006;</button></td>
-   </tr>`;
+   <td data-id="${loc.id}" data-type="date">${loc.time.replace("T", " ")}</td>
+   <td data-id="${loc.id}" data-type="temp">${loc.temperature} &#8451;</td>
+   <td data-id="${loc.id}" data-type="wind">${loc.windspeed} km/h</td>
+   <td data-id="${loc.id}" data-type="code">${weatherCodeToText(
+    loc.weathercode
+  )}</td>
+   <td style="text-align: center"><button type="button" class="btn-edit btn btn--primary" data-id="${
+     loc.id
+   }">&#9998;</button> <button type="button" class="btn-delete btn btn--primary" data-id="${
+    loc.id
+  }">&#10006;</button></td>
+  </tr>`;
 }
 //<button type="button" class="btn-refresh btn btn--primary" data-id="${loc.id}" style="background-image: url('refresh.png'); background-repeat: no-repeat; background-position: center; width: 28px;">&nbsp;</button>
 
@@ -16,9 +24,7 @@ function editLocation(id) {
   alert("NOT IMPLEMENTED: edit location " + loc.locname);
 }
 
-function getConditions(id) {
-  //find element in arrLocs which has the id
-  var loc = arrLocs[id - 1];
+function getConditions(loc) {
   return fetch(
     "https://api.open-meteo.com/v1/forecast?latitude=" +
       loc.latitude +
@@ -159,7 +165,7 @@ function not_used_fn_locationToRow(loc) {
 }
 
 function locationsToTable(arrLocations) {
-  arrLocs = arrLocations.map((x) => x);
+  arrLocs = arrLocations;
   var rowHTML = arrLocations.map(locationToRow);
   document.querySelector("table tbody").innerHTML = rowHTML.join("");
 }
@@ -171,7 +177,7 @@ function loadLocations() {
     })
     .then(function (arrLocations) {
       //console.info(arrLocations);
-      locationsToTable(arrLocations);
+      //locationsToTable(arrLocations);
       return arrLocations;
     });
 }
@@ -208,30 +214,7 @@ function addEventListeners() {
   });
 
   document.getElementById("btn-refresh").addEventListener("click", function () {
-    loadLocations().then((l) => {
-      const requests = l.map((location) => getConditions(location.id));
-      //console.info(requests)
-      Promise.all(requests).then((weatherConditions) => {
-        console.info(weatherConditions);
-        var id;
-        for (i = 0; i < arrLocs.length; i++) {
-          console.info(weatherConditions[i].temperature);
-          id = i + 1;
-          document.querySelector(
-            '[data-id="' + id + '"][data-type="temp"]'
-          ).innerHTML = weatherConditions[i].temperature + " &#8451;";
-          document.querySelector(
-            '[data-id="' + id + '"][data-type="date"]'
-          ).innerHTML = weatherConditions[i].time.replace("T", " ");
-          document.querySelector(
-            '[data-id="' + id + '"][data-type="wind"]'
-          ).innerHTML = weatherConditions[i].windspeed + " km/h";
-          document.querySelector(
-            '[data-id="' + id + '"][data-type="code"]'
-          ).innerHTML = weatherCodeToText(weatherConditions[i].weathercode);
-        }
-      });
-    });
+    loadConditions();
   });
 
   // for modal
@@ -263,30 +246,22 @@ const closeModal = function () {
   overlay.classList.add("hidden");
 };
 
-var arrLocs = [];
-loadLocations().then((l) => {
-  const requests = l.map((location) => getConditions(location.id));
-  //console.info(requests)
-  Promise.all(requests).then((weatherConditions) => {
-    console.info(weatherConditions);
-    var id;
-    for (i = 0; i < arrLocs.length; i++) {
-      console.info(weatherConditions[i].temperature);
-      id = i + 1;
-      document.querySelector(
-        '[data-id="' + id + '"][data-type="temp"]'
-      ).innerHTML = weatherConditions[i].temperature + " &#8451;";
-      document.querySelector(
-        '[data-id="' + id + '"][data-type="date"]'
-      ).innerHTML = weatherConditions[i].time.replace("T", " ");
-      document.querySelector(
-        '[data-id="' + id + '"][data-type="wind"]'
-      ).innerHTML = weatherConditions[i].windspeed + " km/h";
-      document.querySelector(
-        '[data-id="' + id + '"][data-type="code"]'
-      ).innerHTML = weatherCodeToText(weatherConditions[i].weathercode);
-    }
+function loadConditions() {
+  loadLocations().then((locations) => {
+    const requests = locations.map((location) => getConditions(location));
+    return Promise.all(requests).then((weatherConditions) => {
+      const newLocations = locations.map((location, i) => {
+        location.temperature = weatherConditions[i].temperature;
+        location.time = weatherConditions[i].time;
+        location.windspeed = weatherConditions[i].windspeed;
+        location.weathercode = weatherConditions[i].weathercode;
+        return location;
+      });
+      locationsToTable(newLocations);
+      return weatherConditions;
+    });
   });
-});
+}
 
+loadConditions();
 addEventListeners();

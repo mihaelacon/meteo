@@ -1,100 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>METEO</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rubik">
-    <link rel="stylesheet" href="style.css" />
-  </head>
 
-  <body>
-    <header style="padding: 0px">
-      <div id="poza">
-        <img src="nori3.jpg" alt="" width="1142" height="140" />
-      </div>
-      <div id="nume">
-        <h2 style="padding: 0px; text-align: center; color: blue">
-          METEO - WEATHER IN THE CITIES
-        </h2>
-      </div>
-      <center>
-        <table>
-          <thead>
-            <tr>
-              <th>City Name</th>
-              <th>Observation Date</th>
-              <th>Temperature</th>
-              <th>Windspeed</th>
-              <th class="nobr">Weather code</th>
-              <th class="actions">
-                Actions
-                <button id="btn-refresh" type="button" class="btn-refresh btn btn--primary" style="background-image: url('refresh.png'); background-repeat: no-repeat; background-position: center; width: 28px;">&nbsp;</button>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Cluj</td>
-              <td>10/11/2022 11:20 am</td>
-              <td>10 C</td>
-              <td>3%</td>
-              <td>95%</td>
-              <td>3 km/h</td>
-              <td>x e</td>
-            </tr>
-            <tr>
-              <td>Bucuresti</td>
-              <td>10/11/2022 11:25 am</td>
-              <td>14 C</td>
-              <td>0%</td>
-              <td>61%</td>
-              <td>3 km/h</td>
-              <td>x e</td>
-            </tr>
-            <tr>
-              <td>Constanta</td>
-              <td>10/11/2022 11:25 am</td>
-              <td>16 C</td>
-              <td>0%</td>
-              <td>64%</td>
-              <td>3 km/h</td>
-              <td>x e</td>
-            </tr>
-            <tr>
-              <td>Brasov</td>
-              <td>10/11/2022 11:30 am</td>
-              <td>12 C</td>
-              <td>1%</td>
-              <td>72%</td>
-              <td>3 km/h</td>
-              <td>x e</td>
-            </tr>
-            <tr>
-              <td>Sinaia</td>
-              <td>10/11/2022 11:35 am</td>
-              <td>13 C</td>
-              <td>1%</td>
-              <td>63%</td>
-              <td>5 km/h</td>
-              <td>x e</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>&nbsp;</p>
-      </center>
-    </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>METEO</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rubik">
+  <link rel="stylesheet" href="style.css" />
+</head>
 
-    <div class="modal hidden">
-      <button class="close-modal">&times;</button>
-      <h3>Actiune</h1>
-      <p>
-         Text
-      </p>
+<body>
+  <header style="padding: 0px">
+    <div id="poza">
+      <img src="nori3.jpg" alt="" width="1142" height="140" />
     </div>
-    <div class="overlay hidden"></div>
-    
-    <script src="index.js"></script>
-  </body>
+    <div id="nume">
+      <h2 style="padding: 0px; text-align: center; color: blue">
+        METEO - WEATHER IN THE CITIES
+      </h2>
+    </div>
+    <center>
+      <table>
+        <thead>
+          <tr>
+            <th>City Name</th>
+            <th>Observation Date</th>
+            <th>Temperature</th>
+            <th>Windspeed</th>
+            <th class="nobr">Weather code</th>
+            <th class="actions">
+              Actions
+              <button id="btn-refresh" type="button" class="btn-refresh btn btn--primary"
+                style="background-image: url('refresh.png'); background-repeat: no-repeat; background-position: center; width: 28px;">&nbsp;</button>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+      <p>&nbsp;</p>
+    </center>
+  </header>
+
+  <div class="modal hidden">
+    <button class="close-modal">&times;</button>
+    <h3>Actiune</h1>
+      <p>
+        Text
+      </p>
+  </div>
+  <div class="overlay hidden"></div>
+
+  <script src="index.js"></script>
+</body>
+
 </html>
