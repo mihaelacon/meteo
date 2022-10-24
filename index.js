@@ -221,7 +221,7 @@ loadLocations().then(l=>{
     Promise.all(requests).then(weatherConditions=>{
 	   console.info(weatherConditions);
 	   var id;
-	   for (i=0;i<12;i++) {
+	   for (i=0;i<arrLocs.length;i++) {
 			console.info(weatherConditions[i].temperature);
 			id = i+1;
 			document.querySelector('[data-id="'+id+'"][data-type="temp"]').innerHTML = weatherConditions[i].temperature + " &#8451;";
