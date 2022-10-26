@@ -215,6 +215,11 @@ function addEventListeners() {
 
   document.getElementById("btn-refresh").addEventListener("click", function () {
     loadConditions();
+    console.info("Am apasat pe butonul de 'refresh'");
+  });
+
+  document.getElementById("btn-add").addEventListener("click", function () {
+    console.info("Am apasat pe butonul 'add'");
   });
 
   // for modal
@@ -262,6 +267,15 @@ function loadConditions() {
     });
   });
 }
+
+// function refreshButton() {
+//   loadConditions();
+//   console.info("Am apasat pe buton");
+// }
+
+// document.getElementById("btn-refresh").addEventListener("click", function () {
+//   refreshButton();
+// });
 
 loadConditions();
 addEventListeners();
