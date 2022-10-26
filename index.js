@@ -219,6 +219,7 @@ function addEventListeners() {
   });
 
   document.getElementById("btn-add").addEventListener("click", function () {
+    openModal('new', 'location');
     console.info("Am apasat pe butonul 'add'");
   });
 
