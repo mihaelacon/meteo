@@ -168,7 +168,7 @@ p {
   cursor: pointer;
   border: none;
   border-radius: 0.25rem;
-  background: forestgreen;
+  background: rgb(42, 151, 176);
   color: #fff;
   margin: 0 0 5px;
   padding: 10px;
