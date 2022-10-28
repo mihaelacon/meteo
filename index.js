@@ -188,8 +188,9 @@ function addEventListeners() {
     const target = e.target;
     if (target.matches("button.btn-edit")) {
       const id = target.getAttribute("data-id");
+      const frm = document.getElementById("edit").innerHTML;
       const action = "Edit location";
-      openModal(id, action);
+      openModal(frm, action);
     } else if (target.matches("button.btn-refresh")) {
       const id = target.getAttribute("data-id");
       getConditions(id).then((weather) => {
@@ -209,7 +210,8 @@ function addEventListeners() {
     } else if (target.matches("button.btn-delete")) {
       const id = target.getAttribute("data-id");
       const action = "Delete location";
-      openModal(id, action);
+      const frm = document.getElementById("del").innerHTML;
+      openModal(frm, action);
     }
   });
 
@@ -219,7 +221,8 @@ function addEventListeners() {
   });
 
   document.getElementById("btn-add").addEventListener("click", function () {
-    openModal('new', 'location');
+    const frm = document.getElementById("add").innerHTML;
+    openModal(frm, "Add new city");
     console.info("Am apasat pe butonul 'add'");
   });
 
@@ -240,7 +243,7 @@ const editButtons = document.querySelectorAll(".btn-edit");
 
 function openModal(id, action) {
   const modalText = document.querySelector(".modal p");
-  const modalTitle = document.querySelector(".modal h3");
+  const modalTitle = document.querySelector(".modal h2");
   modalText.innerHTML = id;
   modalTitle.innerHTML = action;
   modal.classList.remove("hidden");
