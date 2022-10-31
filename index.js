@@ -1,4 +1,8 @@
 var arrLocs = [];
+var fLS = window.localStorage.getItem("locations");
+if (fLS!==null) {
+   arrLocs = JSON.parse(fLS);
+}
 
 function locationToRow(loc) {
   return `<tr>
@@ -17,12 +21,6 @@ function locationToRow(loc) {
   </tr>`;
 }
 //<button type="button" class="btn-refresh btn btn--primary" data-id="${loc.id}" style="background-image: url('refresh.png'); background-repeat: no-repeat; background-position: center; width: 28px;">&nbsp;</button>
-
-function editLocation(id) {
-  //find element in arrLocs which has the id
-  var loc = arrLocs[id - 1];
-  alert("NOT IMPLEMENTED: edit location " + loc.locname);
-}
 
 function getConditions(loc) {
   return fetch(
@@ -135,35 +133,6 @@ function weatherCodeToText(code) {
   }
 }
 
-function not_used_fn_locationToRow(loc) {
-  try {
-    fetch(
-      "https://api.open-meteo.com/v1/forecast?latitude=" +
-        loc.latitude +
-        "&longitude=" +
-        loc.longitude +
-        "&current_weather=true&timezone=Europe/Bucharest"
-    )
-      .then(function (r) {
-        return r.json();
-      })
-      .then(function (weather) {
-        var vreme = "<tr>";
-        vreme += `<td>${loc.locname}</td>`;
-        vreme += `<td>${weather.current_weather.time.replace("T", " ")}</td>`;
-        vreme += `<td>${weather.current_weather.temperature}</td>`;
-        vreme += `<td>${weather.current_weather.windspeed}</td>`;
-        vreme += `<td>${weather.current_weather.weathercode}</td>`;
-        vreme += `<td><button type="button" data_id="${loc.id}">Edit</button</td>`;
-        vreme += "</tr>";
-        console.info(vreme);
-        return vreme;
-      });
-  } catch (error) {
-    console.info(error);
-  }
-}
-
 function locationsToTable(arrLocations) {
   arrLocs = arrLocations;
   var rowHTML = arrLocations.map(locationToRow);
@@ -176,8 +145,6 @@ function loadLocations() {
       return r.json();
     })
     .then(function (arrLocations) {
-      //console.info(arrLocations);
-      //locationsToTable(arrLocations);
       return arrLocations;
     });
 }
@@ -189,8 +156,10 @@ function addEventListeners() {
     if (target.matches("button.btn-edit")) {
       const id = target.getAttribute("data-id");
       const frm = document.getElementById("edit").innerHTML;
-      const action = "Edit location";
+      const action = "Edit location: "+locationName(id-1);
       openModal(frm, action);
+      document.querySelector("#editform input[name=locname]").value = locationName(id-1);
+      document.querySelector("#editform input[name=locid]").value = id;
     } else if (target.matches("button.btn-refresh")) {
       const id = target.getAttribute("data-id");
       getConditions(id).then((weather) => {
@@ -209,9 +178,10 @@ function addEventListeners() {
       });
     } else if (target.matches("button.btn-delete")) {
       const id = target.getAttribute("data-id");
-      const action = "Delete location";
+      const action = "Delete location: "+locationName(id-1);
       const frm = document.getElementById("del").innerHTML;
       openModal(frm, action);
+      document.querySelector("#locid").value=id;
     }
   });
 
@@ -236,6 +206,59 @@ function addEventListeners() {
   });
 }
 
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(fillPosition);
+  }
+}
+
+function fillPosition(position) {
+  document.querySelector("#latitude").value = position.coords.latitude;
+  document.querySelector("#longitude").value = position.coords.longitude;
+}
+
+function addNow(e) {
+  e.preventDefault();
+  const locname = document.querySelector("#addnewform input[name=locname]").value;
+  const latitude = document.querySelector("#addnewform input[name=latitude]").value;
+  const longitude = document.querySelector("#addnewform input[name=longitude]").value;
+  const newloc = {
+    id: arrLocs.length+1,
+    locname: locname,
+    latitude: latitude,
+    longitude: longitude
+  }
+  arrLocs.push(newloc);
+  for (var i=0; i<arrLocs.length; i++) {
+    arrLocs[i].id = i+1;
+  }
+  saveLocations();
+  closeModal();
+  loadConditions();
+}
+
+function editNow(e) {
+  e.preventDefault();
+  var id = document.querySelector("#editform input[name=locid]").value;
+  console.info('locid:',id);
+  arrLocs[id-1].locname = document.querySelector("#editform input[name=locname]").value;
+  saveLocations();
+  closeModal();
+  loadConditions();
+}
+
+function delNow(e) {
+  e.preventDefault();
+  var id = document.querySelector("#delform input[name=locid]").value;
+  arrLocs.splice(id-1,1);
+  for (var i=0; i<arrLocs.length; i++) {
+    arrLocs[i].id = i+1;
+  }
+  saveLocations();
+  closeModal();
+  loadConditions();
+}
+
 const modal = document.querySelector(".modal");
 const overlay = document.querySelector(".overlay");
 const btnCloseModal = document.querySelector(".close-modal");
@@ -256,6 +279,22 @@ const closeModal = function () {
 };
 
 function loadConditions() {
+  if (fLS!==null) {
+    var locations = arrLocs;
+    const requests = locations.map((location) => getConditions(location));
+    return Promise.all(requests).then((weatherConditions) => {
+      const newLocations = locations.map((location, i) => {
+        location.temperature = weatherConditions[i].temperature;
+        location.time = weatherConditions[i].time;
+        location.windspeed = weatherConditions[i].windspeed;
+        location.weathercode = weatherConditions[i].weathercode;
+        return location;
+      });
+      locationsToTable(newLocations);
+      window.localStorage.setItem("locations", JSON.stringify(locations));
+      return weatherConditions;
+    });
+  } else {
   loadLocations().then((locations) => {
     const requests = locations.map((location) => getConditions(location));
     return Promise.all(requests).then((weatherConditions) => {
@@ -267,9 +306,20 @@ function loadConditions() {
         return location;
       });
       locationsToTable(newLocations);
+      window.localStorage.setItem("locations", JSON.stringify(locations));
       return weatherConditions;
     });
   });
+  }
+}
+
+function locationName(id) {
+  return arrLocs[id].locname;
+}
+
+function saveLocations() {
+  // salvez locatiile din arrLocs in LocalStorage
+  window.localStorage.setItem("locations", JSON.stringify(arrLocs));
 }
 
 // function refreshButton() {

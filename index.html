@@ -1,127 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>METEO</title>
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Rubik"
-    />
-    <link rel="stylesheet" href="style.css" />
-  </head>
 
-  <body>
-    <header style="padding: 0px">
-      <div id="poza">
-        <img src="nori3.jpg" alt="" width="1142" height="140" />
-      </div>
-      <div id="nume">
-        <h2 style="padding: 0px; text-align: center; color: blue">
-          METEO - WEATHER IN THE CITIES
-        </h2>
-      </div>
-      <center>
-        <table>
-          <thead>
-            <tr>
-              <th>City Name</th>
-              <th>Observation Date</th>
-              <th>Temperature</th>
-              <th>Windspeed</th>
-              <th class="nobr">Weather code</th>
-              <th class="actions">
-                Actions
-                <button
-                  id="btn-refresh"
-                  type="button"
-                  class="btn-refresh btn btn--primary"
-                  style="
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>METEO</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rubik" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <header style="padding: 0px">
+    <div id="poza">
+      <img src="nori3.jpg" alt="" width="1142" height="140" />
+    </div>
+    <div id="nume">
+      <h2 style="padding: 0px; text-align: center; color: blue">
+        METEO - WEATHER IN THE CITIES
+      </h2>
+    </div>
+    <center>
+      <table>
+        <thead>
+          <tr>
+            <th>City Name</th>
+            <th>Observation Date</th>
+            <th>Temperature</th>
+            <th>Windspeed</th>
+            <th class="nobr">Weather code</th>
+            <th class="actions">
+              Actions
+              <button id="btn-refresh" type="button" class="btn-refresh btn btn--primary" style="
                     background-image: url('refresh.png');
                     background-repeat: no-repeat;
                     background-position: center;
                     width: 28px;
-                  "
-                >
-                  &nbsp;
-                </button>
-                <button
-                  id="btn-add"
-                  type="button"
-                  class="btn-add btn btn--primary"
-                  style="width: 28px"
-                >
-                  &#10010;
-                </button>
-              </th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-        <p>&nbsp;</p>
-      </center>
-    </header>
+                  ">
+                &nbsp;
+              </button>
+              <button id="btn-add" type="button" class="btn-add btn btn--primary" style="width: 28px">
+                &#10010;
+              </button>
+            </th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <p>&nbsp;</p>
+    </center>
+  </header>
 
-    <div class="modal hidden">
-      <button class="close-modal">&times;</button>
-      <h2>Actiune</h2>
-      <p>Text care va fi inlocuit prin apelarea functiei corespondente.</p>
-    </div>
+  <div class="modal hidden">
+    <button class="close-modal">&times;</button>
+    <h2>Actiune</h2>
+    <p>Text care va fi inlocuit prin apelarea functiei corespondente.</p>
+  </div>
 
-    <div id="add" class="hidden">
-      <form id="entry-form" action="" method="post">
-        <input
-          placeholder="City name"
-          name="locname"
-          type="text"
-          tabindex="1"
-          required
-          autofocus
-        />
-        <button name="detect" type="button" id="detect">
-          Auto-detect current location
-        </button>
-        <input
-          placeholder="Latitude"
-          name="latitude"
-          type="text"
-          tabindex="2"
-          required
-        />
-        <input
-          placeholder="Longitude"
-          name="longitude"
-          type="text"
-          tabindex="3"
-          required
-        />
-        <button name="addnow" type="submit" id="addnow">Add now</button>
-      </form>
-    </div>
+  <div id="add" class="hidden md-form">
+    <form id="addnewform" action="" method="post">
+      <input placeholder="City name" name="locname" type="text" tabindex="1" required />
+      <button name="detect" type="button" id="detect" onClick="getLocation()">Auto-detect current location</button>
+      <input placeholder="Latitude" name="latitude" id="latitude" type="text" tabindex="2" required />
+      <input placeholder="Longitude" name="longitude" id="longitude" type="text" tabindex="3" required />
+      <button name="addnow" type="submit" id="addnow" onClick="addNow(event)">Add now</button>
+    </form>
+  </div>
 
-    <div id="del" class="hidden">
-      <form id="entry-form" action="" method="post">
-        <button name="deleterow" type="submit" id="delrow">Delete</button>
-      </form>
-    </div>
+  <div id="del" class="hidden md-form">
+    <form id="delform" action="" method="post">
+      <input name="locid" type="hidden" tabindex="1" id="locid" />
+      <button name="deleterow" type="submit" id="delrow" onClick="delNow(event)">Delete</button>
+    </form>
+  </div>
 
-    <div id="edit" class="hidden">
-      <form id="entry-form" action="" method="post">
-        <input
-          placeholder="City name"
-          name="locname"
-          type="text"
-          tabindex="1"
-          required
-          value="Cluj"
-        />
-        <button name="editrow" type="submit" id="edtrow">Save</button>
-      </form>
-    </div>
+  <div id="edit" class="hidden md-form">
+    <form id="editform" action="" method="post">
+      <input placeholder="City name" name="locname" type="text" tabindex="1" required />
+      <input name="locid" type="hidden" id="locid" />
+      <button name="editrow" type="submit" id="edtrow" onClick="editNow(event)">Save</button>
+    </form>
+  </div>
 
-    <div class="overlay hidden"></div>
+  <div class="overlay hidden"></div>
 
-    <script src="index.js"></script>
-  </body>
+  <script src="index.js"></script>
+</body>
+
 </html>

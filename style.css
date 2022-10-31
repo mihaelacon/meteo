@@ -154,7 +154,7 @@ p {
   z-index: 5;
 }
 
-#entry-form input[type="text"] {
+#addnewform input[type="text"], #editform input[type="text"] {
   width: 100%;
   border: 1px solid #ccc;
   border-radius: 0.25rem;
@@ -163,7 +163,7 @@ p {
   padding: 10px;
 }
 
-#entry-form button[type="submit"] {
+#addnewform button[type="submit"], #delform button[type="submit"], #editform button[type="submit"] {
   width: 105%;
   cursor: pointer;
   border: none;
@@ -176,7 +176,7 @@ p {
   text-align: center;
 }
 
-#entry-form button[type="button"] {
+#addnewform button[type="button"] {
   width: 105%;
   cursor: pointer;
   border: none;
