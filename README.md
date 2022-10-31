@@ -12,10 +12,9 @@ Aplicatie meteo
 - [x] Create a table in html - Mihaela
 - [x] Table headers: City Name, Observation Date, Temperature, Humidity, WindSpeed, Actions - Mihaela
 - [x] Add a json file with Cities - Aurelian
-- [x] Design and structures in CSS - Aurelian
-- [x] Add actions buttons - Aurelian
+- [x] Design and structures in CSS - Aurelian & Mihaela
+- [x] Add actions buttons - Aurelian & Mihaela
 - [x] Get weather conditions (on demand) - Aurelian
-- [ ] Edit/Modify locations/cities
-- [ ] Get current location (option)
-- [ ] Save data in LocalStorage
-- ...to be continued
+- [x] Edit/Modify locations/cities - Aurelian
+- [x] Get current location (option) - Aurelian
+- [x] Save data in LocalStorage - Aurelian
