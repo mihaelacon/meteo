@@ -20,10 +20,22 @@ table {
   font-size: 16px;
 }
 
+/* .wimgcode {
+  margin: 0;
+  padding: 0;
+} */
+
 th,
-td {
+td.wtemp {
   padding: 8px 12px;
   text-align: left;
+}
+
+th,
+td.wimgcode {
+  /* padding: 8px 12px; */
+  /* text-align: left; */
+  height: 40px;
 }
 
 thead th {
@@ -31,12 +43,28 @@ thead th {
   color: #fff;
 }
 
-tbody tr:nth-child(even) {
+/* tbody tr:nth-child(even) {
   background-color: #f8f9fa;
 }
 
 tbody tr:nth-child(odd) {
   background-color: #e9ecef;
+} */
+
+/* tbody tr:nth-child(even) {
+  background-color: #2ea0b9;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #7dc0df;
+} */
+
+tbody tr:nth-child(even) {
+  background-color: #cee6f5;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #fbfdfa;
 }
 
 html,
@@ -47,6 +75,17 @@ body {
   --primary: rgb(59, 130, 246);
   --primary-light: rgb(96, 165, 250);
   --gray: rgb(209, 213, 219);
+}
+
+.img {
+  margin: 0%;
+  width: 48px;
+}
+
+.afisareimg {
+  /* width='5%' */
+  width: 70px;
+  margin: 0%;
 }
 
 .nobr {
@@ -154,7 +193,8 @@ p {
   z-index: 5;
 }
 
-#addnewform input[type="text"], #editform input[type="text"] {
+#addnewform input[type="text"],
+#editform input[type="text"] {
   width: 100%;
   border: 1px solid #ccc;
   border-radius: 0.25rem;
@@ -163,7 +203,9 @@ p {
   padding: 10px;
 }
 
-#addnewform button[type="submit"], #delform button[type="submit"], #editform button[type="submit"] {
+#addnewform button[type="submit"],
+#delform button[type="submit"],
+#editform button[type="submit"] {
   width: 105%;
   cursor: pointer;
   border: none;
@@ -188,3 +230,7 @@ p {
   font-size: 14px;
   text-align: center;
 }
+/* 
+.wcode {
+  vertical-align: middle;
+} */

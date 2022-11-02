@@ -1,16 +1,27 @@
 var arrLocs = [];
 var fLS = window.localStorage.getItem("locations");
-if (fLS!==null) {
-   arrLocs = JSON.parse(fLS);
+if (fLS !== null) {
+  arrLocs = JSON.parse(fLS);
 }
 
 function locationToRow(loc) {
   return `<tr>
-   <td>${loc.locname}</td>
-   <td data-id="${loc.id}" data-type="date">${loc.time.replace("T", " ")}</td>
-   <td data-id="${loc.id}" data-type="temp">${loc.temperature} &#8451;</td>
-   <td data-id="${loc.id}" data-type="wind">${loc.windspeed} km/h</td>
-   <td data-id="${loc.id}" data-type="code">${weatherCodeToText(
+   <td class="wtemp">${loc.locname}</td>
+   <td data-id="${loc.id}" data-type="date" class="wtemp">${loc.time.replace(
+    "T",
+    " "
+  )}</td>
+   <td data-id="${loc.id}" data-type="temp" class="wtemp">${
+    loc.temperature
+  } &#8451;</td>
+   <td data-id="${loc.id}" data-type="wind" class="wtemp">${
+    loc.windspeed
+  } km/h</td>
+  
+   <td data-id="${loc.id}" data-type="code" class="wtemp">${weatherCodeToText(
+    loc.weathercode
+  )}</td>
+  <td data-id="${loc.id}" data-type="wcod" class="wimgcode">${weatherCodeForImg(
     loc.weathercode
   )}</td>
    <td style="text-align: center"><button type="button" class="btn-edit btn btn--primary" data-id="${
@@ -133,6 +144,104 @@ function weatherCodeToText(code) {
   }
 }
 
+function weatherCodeForImg(code) {
+  let c = parseInt(code);
+  switch (c) {
+    case 0:
+      return "<img src='SVG/clear-day.svg'  class ='afisareimg' />";
+      //  clear sky";
+      break;
+    case 1:
+      return "<img src='SVG/partly-cloudy-day.svg' class ='afisareimg' />";
+      // "mainly clear";
+      break;
+    case 2:
+      return "<img src='SVG/overcast-day.svg' class ='afisareimg' />";
+      // "partly cloudy";
+      break;
+    case 3:
+      return "<img src='SVG/overcast.svg'  class ='afisareimg' />";
+      // "overcast";
+      break;
+    case 45:
+      return "fog";
+      break;
+    case 48:
+      return "persistent fog";
+      break;
+    case 51:
+      return "light drizzle";
+      break;
+    case 53:
+      return "moderate drizzle";
+      break;
+    case 55:
+      return "dense drizzle";
+      break;
+    case 56:
+      return "freezing drizzle";
+      break;
+    case 57:
+      return "intense freezing drizzle";
+      break;
+    case 61:
+      return "<img src='SVG/extreme-rain.svg' class ='afisareimg' />";
+      // "light rain";
+      break;
+    case 63:
+      return "moderate rain";
+      break;
+    case 65:
+      return "heavy rain";
+      break;
+    case 66:
+      return "freezing rain";
+      break;
+    case 67:
+      return "heavy freezing rain";
+      break;
+    case 71:
+      return "light snow";
+      break;
+    case 73:
+      return "moderate snow";
+      break;
+    case 75:
+      return "heavy snow";
+      break;
+    case 77:
+      return "snow grains";
+      break;
+    case 80:
+      return "light rain showers";
+      break;
+    case 81:
+      return "moderate rain showers";
+      break;
+    case 82:
+      return "violent rain showers";
+      break;
+    case 85:
+      return "snow showers";
+      break;
+    case 86:
+      return "heavy snow showers";
+      break;
+    case 95:
+      return "thunderstorm";
+      break;
+    case 96:
+      return "thunderstorm & hail";
+      break;
+    case 99:
+      return "thunderstorm & heavy hail";
+      break;
+    default:
+      return "code: " + code;
+      break;
+  }
+}
+
 function locationsToTable(arrLocations) {
   arrLocs = arrLocations;
   var rowHTML = arrLocations.map(locationToRow);
@@ -156,9 +265,10 @@ function addEventListeners() {
     if (target.matches("button.btn-edit")) {
       const id = target.getAttribute("data-id");
       const frm = document.getElementById("edit").innerHTML;
-      const action = "Edit location: "+locationName(id-1);
+      const action = "Edit location: " + locationName(id - 1);
       openModal(frm, action);
-      document.querySelector("#editform input[name=locname]").value = locationName(id-1);
+      document.querySelector("#editform input[name=locname]").value =
+        locationName(id - 1);
       document.querySelector("#editform input[name=locid]").value = id;
     } else if (target.matches("button.btn-refresh")) {
       const id = target.getAttribute("data-id");
@@ -178,10 +288,10 @@ function addEventListeners() {
       });
     } else if (target.matches("button.btn-delete")) {
       const id = target.getAttribute("data-id");
-      const action = "Delete location: "+locationName(id-1);
+      const action = "Delete location: " + locationName(id - 1);
       const frm = document.getElementById("del").innerHTML;
       openModal(frm, action);
-      document.querySelector("#locid").value=id;
+      document.querySelector("#locid").value = id;
     }
   });
 
@@ -219,18 +329,24 @@ function fillPosition(position) {
 
 function addNow(e) {
   e.preventDefault();
-  const locname = document.querySelector("#addnewform input[name=locname]").value;
-  const latitude = document.querySelector("#addnewform input[name=latitude]").value;
-  const longitude = document.querySelector("#addnewform input[name=longitude]").value;
+  const locname = document.querySelector(
+    "#addnewform input[name=locname]"
+  ).value;
+  const latitude = document.querySelector(
+    "#addnewform input[name=latitude]"
+  ).value;
+  const longitude = document.querySelector(
+    "#addnewform input[name=longitude]"
+  ).value;
   const newloc = {
-    id: arrLocs.length+1,
+    id: arrLocs.length + 1,
     locname: locname,
     latitude: latitude,
-    longitude: longitude
-  }
+    longitude: longitude,
+  };
   arrLocs.push(newloc);
-  for (var i=0; i<arrLocs.length; i++) {
-    arrLocs[i].id = i+1;
+  for (var i = 0; i < arrLocs.length; i++) {
+    arrLocs[i].id = i + 1;
   }
   saveLocations();
   closeModal();
@@ -240,8 +356,10 @@ function addNow(e) {
 function editNow(e) {
   e.preventDefault();
   var id = document.querySelector("#editform input[name=locid]").value;
-  console.info('locid:',id);
-  arrLocs[id-1].locname = document.querySelector("#editform input[name=locname]").value;
+  console.info("locid:", id);
+  arrLocs[id - 1].locname = document.querySelector(
+    "#editform input[name=locname]"
+  ).value;
   saveLocations();
   closeModal();
   loadConditions();
@@ -250,9 +368,9 @@ function editNow(e) {
 function delNow(e) {
   e.preventDefault();
   var id = document.querySelector("#delform input[name=locid]").value;
-  arrLocs.splice(id-1,1);
-  for (var i=0; i<arrLocs.length; i++) {
-    arrLocs[i].id = i+1;
+  arrLocs.splice(id - 1, 1);
+  for (var i = 0; i < arrLocs.length; i++) {
+    arrLocs[i].id = i + 1;
   }
   saveLocations();
   closeModal();
@@ -279,7 +397,7 @@ const closeModal = function () {
 };
 
 function loadConditions() {
-  if (fLS!==null) {
+  if (fLS !== null) {
     var locations = arrLocs;
     const requests = locations.map((location) => getConditions(location));
     return Promise.all(requests).then((weatherConditions) => {
@@ -295,21 +413,21 @@ function loadConditions() {
       return weatherConditions;
     });
   } else {
-  loadLocations().then((locations) => {
-    const requests = locations.map((location) => getConditions(location));
-    return Promise.all(requests).then((weatherConditions) => {
-      const newLocations = locations.map((location, i) => {
-        location.temperature = weatherConditions[i].temperature;
-        location.time = weatherConditions[i].time;
-        location.windspeed = weatherConditions[i].windspeed;
-        location.weathercode = weatherConditions[i].weathercode;
-        return location;
+    loadLocations().then((locations) => {
+      const requests = locations.map((location) => getConditions(location));
+      return Promise.all(requests).then((weatherConditions) => {
+        const newLocations = locations.map((location, i) => {
+          location.temperature = weatherConditions[i].temperature;
+          location.time = weatherConditions[i].time;
+          location.windspeed = weatherConditions[i].windspeed;
+          location.weathercode = weatherConditions[i].weathercode;
+          return location;
+        });
+        locationsToTable(newLocations);
+        window.localStorage.setItem("locations", JSON.stringify(locations));
+        return weatherConditions;
       });
-      locationsToTable(newLocations);
-      window.localStorage.setItem("locations", JSON.stringify(locations));
-      return weatherConditions;
     });
-  });
   }
 }
 
