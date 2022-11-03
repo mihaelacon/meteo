@@ -1,5 +1,18 @@
 var arrLocs = [];
 var fLS = window.localStorage.getItem("locations");
+var today = new Date().getHours();
+// console.info(today);
+
+function isDay() {
+  if (today >= 7 && today <= 19) {
+    return true;
+  } else {
+    return false;
+  }
+}
+// isDay();
+// console.info(isDay());
+
 if (fLS !== null) {
   arrLocs = JSON.parse(fLS);
 }
@@ -148,96 +161,133 @@ function weatherCodeForImg(code) {
   let c = parseInt(code);
   switch (c) {
     case 0:
-      return "<img src='SVG/clear-day.svg'  class ='afisareimg' />";
-      //  clear sky";
+      if (isDay()) {
+        return "<img src='SVG/FILL/clear-day.svg'  class ='afisareimg' />";
+      } else {
+        return "<img src='SVG/FILL/clear-night.svg'  class ='afisareimg' />";
+      }
+      //  "clear sky";
       break;
     case 1:
-      return "<img src='SVG/partly-cloudy-day.svg' class ='afisareimg' />";
+      if (isDay()) {
+        return "<img src='SVG/FILL/clear-day.svg' class ='afisareimg' />";
+      } else {
+        return "<img src='SVG/FILL/clear-night.svg' class ='afisareimg' />";
+      }
       // "mainly clear";
       break;
     case 2:
-      return "<img src='SVG/overcast-day.svg' class ='afisareimg' />";
+      if (isDay()) {
+        return "<img src='SVG/FILL/partly-cloudy-day.svg' class ='afisareimg' />";
+      } else {
+        return "<img src='SVG/FILL/partly-cloudy-night.svg' class ='afisareimg' />";
+      }
       // "partly cloudy";
       break;
     case 3:
-      return "<img src='SVG/overcast.svg'  class ='afisareimg' />";
+      return "<img src='SVG/FILL/overcast.svg'  class ='afisareimg' />";
       // "overcast";
       break;
     case 45:
-      return "fog";
+      return "<img src='SVG/FILL/fog.svg'  class ='afisareimg' />";
+      //  "fog";
       break;
     case 48:
-      return "persistent fog";
+      return "<img src='SVG/FILL/fog.svg'  class ='afisareimg' />";
+      //"persistent fog";
       break;
     case 51:
-      return "light drizzle";
+      return "<img src='SVG/FILL/overcast-drizzle.svg'  class ='afisareimg' />";
+      // "light drizzle";
       break;
     case 53:
-      return "moderate drizzle";
+      return "<img src='SVG/FILL/overcast-drizzle.svg'  class ='afisareimg' />";
+      //"moderate drizzle";
       break;
     case 55:
-      return "dense drizzle";
+      return "<img src='SVG/FILL/overcast-drizzle.svg'  class ='afisareimg' />";
+      // "dense drizzle";
       break;
     case 56:
-      return "freezing drizzle";
+      return "<img src='SVG/FILL/overcast-drizzle.svg'  class ='afisareimg' />";
+      // "freezing drizzle";
       break;
     case 57:
-      return "intense freezing drizzle";
+      return "<img src='SVG/FILL/overcast-drizzle.svg'  class ='afisareimg' />";
+      // "intense freezing drizzle";
       break;
     case 61:
       return "<img src='SVG/extreme-rain.svg' class ='afisareimg' />";
       // "light rain";
       break;
     case 63:
-      return "moderate rain";
+      return "<img src='SVG/extreme-rain.svg' class ='afisareimg' />";
+      // "moderate rain";
       break;
     case 65:
-      return "heavy rain";
+      return "<img src='SVG/extreme-rain.svg' class ='afisareimg' />";
+      // "heavy rain";
       break;
     case 66:
-      return "freezing rain";
+      return "<img src='SVG/extreme-rain.svg' class ='afisareimg' />";
+      r; // "freezing rain";
       break;
     case 67:
-      return "heavy freezing rain";
+      return "<img src='SVG/extreme-rain.svg' class ='afisareimg' />";
+      // "heavy freezing rain";
       break;
     case 71:
-      return "light snow";
+      return "<img src='SVG/FILL/overcast-snow.svg'  class ='afisareimg' />";
+      // "light snow";
       break;
     case 73:
-      return "moderate snow";
+      return "<img src='SVG/FILL/overcast-snow.svg'  class ='afisareimg' />";
+      // "moderate snow";
       break;
     case 75:
-      return "heavy snow";
+      return "<img src='SVG/FILL/overcast-snow.svg'  class ='afisareimg' />";
+      // "heavy snow";
       break;
     case 77:
-      return "snow grains";
+      return "<img src='SVG/FILL/overcast-snow.svg'  class ='afisareimg' />";
+      // "snow grains";
       break;
     case 80:
-      return "light rain showers";
+      return "<img src='SVG/extreme-rain.svg' class ='afisareimg' />";
+      // "light rain showers";
       break;
     case 81:
-      return "moderate rain showers";
+      return "<img src='SVG/extreme-rain.svg' class ='afisareimg' />";
+      // "moderate rain showers";
       break;
     case 82:
-      return "violent rain showers";
+      return "<img src='SVG/extreme-rain.svg' class ='afisareimg' />";
+      // "violent rain showers";
       break;
     case 85:
-      return "snow showers";
+      return "<img src='SVG/FILL/overcast-snow.svg'  class ='afisareimg' />";
+      // "snow showers";
       break;
     case 86:
-      return "heavy snow showers";
+      return "<img src='SVG/FILL/overcast-snow.svg'  class ='afisareimg' />";
+      // "heavy snow showers";
       break;
     case 95:
-      return "thunderstorm";
+      return "<img src='SVG/FILL/thunderstorms-overcast.svg'  class ='afisareimg' />";
+      //return "<img src='SVG/FILL/thunderstorms-rain.svg'  class ='afisareimg' />";
+      // "thunderstorm";
       break;
     case 96:
-      return "thunderstorm & hail";
+      return "<img src='SVG/FILL/thunderstorms-overcast-rain.svg' class ='afisareimg' />";
+      // "thunderstorm & hail";
       break;
     case 99:
-      return "thunderstorm & heavy hail";
+      return "<img src='SVG/FILL/thunderstorms-overcast-rain.svg' class ='afisareimg' />";
+      // "thunderstorm & heavy hail";
       break;
     default:
-      return "code: " + code;
+      return "<img src='SVG/FILL/dust-wind.svg'  class ='afisareimg' />";
+      // "code: " + code;
       break;
   }
 }
