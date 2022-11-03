@@ -17,6 +17,21 @@ if (fLS !== null) {
   arrLocs = JSON.parse(fLS);
 }
 
+function colorTemp(temp) {
+  let t = parseInt(temp);
+  let color = "";
+  if (t<5) {
+    color = "#0000FF"
+  } else if (t>4 && t<14) {
+    color = "#00AA88"
+  } else if (t>13 && t<30) {
+    color = "#FF7700"
+  } else {
+    color = "#FA0000"
+  }
+  return "<span style='color: " + color + "'>" + temp + "</span>"
+}
+
 function locationToRow(loc) {
   return `<tr>
    <td class="wtemp">${loc.locname}</td>
@@ -25,12 +40,12 @@ function locationToRow(loc) {
     " "
   )}</td>
    <td data-id="${loc.id}" data-type="temp" class="wtemp">${
-    loc.temperature
+    colorTemp(loc.temperature)
   } &#8451;</td>
    <td data-id="${loc.id}" data-type="wind" class="wtemp">${
     loc.windspeed
   } km/h</td>
-  
+
    <td data-id="${loc.id}" data-type="code" class="wtemp">${weatherCodeToText(
     loc.weathercode
   )}</td>

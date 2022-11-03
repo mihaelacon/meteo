@@ -188,8 +188,8 @@ p {
   left: 0;
   width: 100%;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(2px);
+/*   background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px); */
   z-index: 5;
 }
 
@@ -230,7 +230,7 @@ p {
   font-size: 14px;
   text-align: center;
 }
-/* 
+/*
 .wcode {
   vertical-align: middle;
 } */
