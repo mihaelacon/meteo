@@ -22,12 +22,16 @@ function colorTemp(temp) {
   let color = "";
   if (t<5) {
     color = "#0000FF"
-  } else if (t>4 && t<14) {
-    color = "#00AA88"
-  } else if (t>13 && t<30) {
-    color = "#FF7700"
-  } else {
-    color = "#FA0000"
+  } else if (t>=5 && t<=15) {
+    color = "#02c0cd"
+  } else if (t>15 && t<=24) {
+    color = "#02cd13"
+  } else  if (t>24 && t<=30) {
+    //color = "#cdab02"
+    color = "#f28d09"
+  } else if (t>30) {
+    //color = "#f22809"
+    color = "red"
   }
   return "<span style='color: " + color + "'>" + temp + "</span>"
 }
