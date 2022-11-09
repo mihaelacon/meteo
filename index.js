@@ -333,31 +333,16 @@ function addEventListeners() {
     const target = e.target;
     if (target.matches("button.btn-edit")) {
       const id = target.getAttribute("data-id");
+      //console.info(id);
       const frm = document.getElementById("edit").innerHTML;
-      const action = "Edit location: " + locationName(id - 1);
+      const action = "Edit location: " + locationName(id);
       openModal(frm, action);
       document.querySelector("#editform input[name=locname]").value =
-        locationName(id - 1);
+        locationName(id);
       document.querySelector("#editform input[name=locid]").value = id;
-    } else if (target.matches("button.btn-refresh")) {
-      const id = target.getAttribute("data-id");
-      getConditions(id).then((weather) => {
-        document.querySelector(
-          '[data-id="' + id + '"][data-type="date"]'
-        ).innerHTML = weather.time.replace("T", " ");
-        document.querySelector(
-          '[data-id="' + id + '"][data-type="temp"]'
-        ).innerHTML = weather.temperature + " &#8451;";
-        document.querySelector(
-          '[data-id="' + id + '"][data-type="wind"]'
-        ).innerHTML = weather.windspeed + " km/h";
-        document.querySelector(
-          '[data-id="' + id + '"][data-type="code"]'
-        ).innerHTML = fn_weatherCodeToText(weather.weathercode);
-      });
     } else if (target.matches("button.btn-delete")) {
       const id = target.getAttribute("data-id");
-      const action = "Delete location: " + locationName(id - 1);
+      const action = "Delete location: " + locationName(id);
       const frm = document.getElementById("del").innerHTML;
       openModal(frm, action);
       document.querySelector("#locid").value = id;
@@ -407,16 +392,14 @@ function addNow(e) {
   const longitude = document.querySelector(
     "#addnewform input[name=longitude]"
   ).value;
+  const new_id = arrLocs[arrLocs.length-1].id + 1;
   const newloc = {
-    id: arrLocs.length + 1,
+    id: new_id,
     locname: locname,
     latitude: latitude,
     longitude: longitude,
   };
   arrLocs.push(newloc);
-  for (var i = 0; i < arrLocs.length; i++) {
-    arrLocs[i].id = i + 1;
-  }
   saveLocations();
   closeModal();
   loadConditions();
@@ -425,8 +408,7 @@ function addNow(e) {
 function editNow(e) {
   e.preventDefault();
   var id = document.querySelector("#editform input[name=locid]").value;
-  console.info("locid:", id);
-  arrLocs[id - 1].locname = document.querySelector(
+  arrLocs[locationIndex(id)].locname = document.querySelector(
     "#editform input[name=locname]"
   ).value;
   saveLocations();
@@ -437,10 +419,7 @@ function editNow(e) {
 function delNow(e) {
   e.preventDefault();
   var id = document.querySelector("#delform input[name=locid]").value;
-  arrLocs.splice(id - 1, 1);
-  for (var i = 0; i < arrLocs.length; i++) {
-    arrLocs[i].id = i + 1;
-  }
+  arrLocs.splice(locationIndex(id), 1);
   saveLocations();
   closeModal();
   loadConditions();
@@ -500,8 +479,24 @@ function loadConditions() {
   }
 }
 
-function locationName(id) {
-  return arrLocs[id].locname;
+function locationName(idToFind) {
+  var arrIndex;
+  for (var i=0;i<arrLocs.length;i++) {
+  	 if (arrLocs[i].id==idToFind) {
+  	 	arrIndex = i
+  	 }
+  }
+  return arrLocs[arrIndex].locname;
+}
+
+function locationIndex(idToFind) {
+  var arrIndex;
+  for (var i=0;i<arrLocs.length;i++) {
+  	 if (arrLocs[i].id==idToFind) {
+  	 	arrIndex = i
+  	 }
+  }
+  return arrIndex;
 }
 
 function saveLocations() {
