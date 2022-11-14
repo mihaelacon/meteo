@@ -1,0 +1,116 @@
+[
+  {
+    "id": 1,
+    "locname": "Cluj",
+    "latitude": "46.7712101",
+    "longitude": "23.6236353"
+  },
+  {
+    "id": 2,
+    "locname": "Bucuresti",
+    "latitude": "44.4267674",
+    "longitude": "26.1025384"
+  },
+  {
+    "id": 3,
+    "locname": "Constanta",
+    "latitude": "44.1598013",
+    "longitude": "28.6348138"
+  },
+  {
+    "id": 4,
+    "locname": "Oradea",
+    "latitude": "47.0465005",
+    "longitude": "21.9189438"
+  },
+  {
+    "id": 5,
+    "locname": "Timisoara",
+    "latitude": "45.7488716",
+    "longitude": "21.2086793"
+  },
+  {
+    "id": 6,
+    "locname": "Iasi",
+    "latitude": "47.1584549",
+    "longitude": "27.6014418"
+  },
+  {
+    "id": 7,
+    "locname": "Craiova",
+    "latitude": "44.3301785",
+    "longitude": "23.7948808"
+  },
+  {
+    "id": 8,
+    "locname": "Bacau",
+    "latitude": "46.5670437",
+    "longitude": "26.9145748"
+  },
+  {
+    "id": 9,
+    "locname": "Galati",
+    "latitude": "45.4353208",
+    "longitude": "28.0079945"
+  },
+  {
+    "id": 10,
+    "locname": "Mangalia",
+    "latitude": "43.8152436",
+    "longitude": "28.5741496"
+  },
+  {
+    "id": 11,
+    "locname": "Brasov",
+    "latitude": "45.6426802",
+    "longitude": "25.5887252"
+  },
+  {
+    "id": 12,
+    "locname": "Suceava",
+    "latitude": "47.6634521",
+    "longitude": "26.2732302"
+  },
+  {
+    "id": 13,
+    "locname": "Alta (Norway)",
+    "latitude": "69.9798013",
+    "longitude": "23.2986793"
+  },
+  {
+    "id": 14,
+    "locname": "Africa - Golful Guineei",
+    "latitude": "5.0001123",
+    "longitude": "5.0235784"
+  },
+  {
+    "id": 15,
+    "locname": "Abidjan (Coasta de Fildes)",
+    "latitude": "5.3567934",
+    "longitude": "-4.1006793"
+  },
+  {
+    "id": 16,
+    "locname": "Lagos (Ghana)",
+    "latitude": "6.5798013",
+    "longitude": "3.3729867"
+  },
+  {
+    "id": 17,
+    "locname": "Tiksi",
+    "latitude": "71.7098013",
+    "longitude": "128.8729793"
+  },
+  {
+    "id": 18,
+    "locname": "Ayon",
+    "latitude": "69.9308013",
+    "longitude": "167.9986793"
+  },
+  {
+    "id": 19,
+    "locname": "Siberia Est",
+    "latitude": "66.1208013",
+    "longitude": "-171.8846793"
+  }
+]
