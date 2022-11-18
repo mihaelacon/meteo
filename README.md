@@ -1,4 +1,4 @@
-![Meteo app](https://aurelian2020.github.io/meteo/meteo_app.png)
+![Meteo app](meteo_app.png)
 
 # Meteo
 
