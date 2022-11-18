@@ -1,5 +1,3 @@
-![total GitHub contributors](https://img.shields.io/github/contributors-anon/aurelian2020/meteo.svg)
-
 # Meteo
 
 Weather app
