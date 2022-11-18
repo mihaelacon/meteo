@@ -1,4 +1,4 @@
-![total GitHub contributors](https://img.shields.io/github/contributors-anon/meteo/meteo.svg)
+![total GitHub contributors](https://img.shields.io/github/contributors-anon/aurelian2020/meteo.svg)
 
 # Meteo
 
