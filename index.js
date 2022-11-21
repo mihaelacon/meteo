@@ -20,20 +20,20 @@ if (fLS !== null) {
 function colorTemp(temp) {
   let t = parseInt(temp);
   let color = "";
-  if (t<5) {
-    color = "#0000FF"
-  } else if (t>=5 && t<=15) {
-    color = "#02c0cd"
-  } else if (t>15 && t<=24) {
-    color = "#02cd13"
-  } else  if (t>24 && t<=30) {
+  if (t < 5) {
+    color = "#0000FF";
+  } else if (t >= 5 && t <= 15) {
+    color = "#02c0cd";
+  } else if (t > 15 && t <= 24) {
+    color = "#02cd13";
+  } else if (t > 24 && t <= 30) {
     //color = "#cdab02"
-    color = "#f28d09"
-  } else if (t>30) {
+    color = "#f28d09";
+  } else if (t > 30) {
     //color = "#f22809"
-    color = "red"
+    color = "red";
   }
-  return "<span style='color: " + color + "'>" + temp + "</span>"
+  return "<span style='color: " + color + "'>" + temp + "</span>";
 }
 
 function locationToRow(loc) {
@@ -43,9 +43,9 @@ function locationToRow(loc) {
     "T",
     " "
   )}</td>
-   <td data-id="${loc.id}" data-type="temp" class="wtemp">${
-    colorTemp(loc.temperature)
-  } &#8451;</td>
+   <td data-id="${loc.id}" data-type="temp" class="wtemp">${colorTemp(
+    loc.temperature
+  )} &#8451;</td>
    <td data-id="${loc.id}" data-type="wind" class="wtemp">${
     loc.windspeed
   } km/h</td>
@@ -392,7 +392,10 @@ function addNow(e) {
   const longitude = document.querySelector(
     "#addnewform input[name=longitude]"
   ).value;
-  const new_id = arrLocs[arrLocs.length-1].id + 1;
+  if (latitude == "" || longitude == "") {
+    return false;
+  }
+  const new_id = arrLocs[arrLocs.length - 1].id + 1;
   const newloc = {
     id: new_id,
     locname: locname,
@@ -481,20 +484,20 @@ function loadConditions() {
 
 function locationName(idToFind) {
   var arrIndex;
-  for (var i=0;i<arrLocs.length;i++) {
-  	 if (arrLocs[i].id==idToFind) {
-  	 	arrIndex = i
-  	 }
+  for (var i = 0; i < arrLocs.length; i++) {
+    if (arrLocs[i].id == idToFind) {
+      arrIndex = i;
+    }
   }
   return arrLocs[arrIndex].locname;
 }
 
 function locationIndex(idToFind) {
   var arrIndex;
-  for (var i=0;i<arrLocs.length;i++) {
-  	 if (arrLocs[i].id==idToFind) {
-  	 	arrIndex = i
-  	 }
+  for (var i = 0; i < arrLocs.length; i++) {
+    if (arrLocs[i].id == idToFind) {
+      arrIndex = i;
+    }
   }
   return arrIndex;
 }
